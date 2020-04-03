@@ -35,7 +35,7 @@
     <TextView
         android:id="@+id/tvVS"
         android:layout_width="106dp"
-        android:layout_height="40"
+        android:layout_height="40dp"
         android:layout_marginTop="44dp"
         android:text="@string/textVS"
         android:textAlignment="center"
