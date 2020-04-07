@@ -12,10 +12,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -100,7 +97,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         // Initialize the recycler view with a linear layout manager, adapter
-        rvPortals.layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
+        rvPortals.layoutManager  = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         rvPortals.adapter = portalAdapter
         rvPortals.addItemDecoration(DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL))
         createItemTouchHelper().attachToRecyclerView(rvPortals)
