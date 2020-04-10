@@ -5,4 +5,5 @@
     <string name="add_your_portal">Add your portal</string>
     <string name="portalName">Portal Name</string>
     <string name="portalUrl">Portal Url</string>
+    <string name="add_Portal">add portal</string>
 </resources>

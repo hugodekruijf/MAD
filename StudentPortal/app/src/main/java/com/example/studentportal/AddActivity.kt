@@ -21,12 +21,14 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        fab.setOnClickListener { onSaveClick() }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Create a Portal"
+        btnAddPortal.setOnClickListener { onSaveClick() }
     }
 
     private fun onSaveClick() {
         if (etAddPortal.text.toString().isNotBlank() && etAddPortalUrl.text.toString().isNotBlank()) {
-            val portal = Portal(etAddPortal.text.toString(), etAddPortalUrl.text.toString())
+            val portal = Portal(etAddPortal.text.toString() + "\n" + etAddPortalUrl.text.toString(), etAddPortalUrl.text.toString())
             val resultIntent = Intent()
             resultIntent.putExtra(EXTRA_PORTAL, portal)
             setResult(Activity.RESULT_OK, resultIntent)
