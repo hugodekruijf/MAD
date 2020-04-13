@@ -1,4 +1,4 @@
-package com.example.level4task1
+package com.example.level4task1.database
 
 import android.content.Context
 import androidx.room.Database

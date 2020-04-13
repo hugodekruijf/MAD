@@ -1,7 +1,6 @@
-package com.example.level4task1
+package com.example.level4task1.ui
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -11,6 +10,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.androidcourse.shoppinglistkotlin.model.Product
+import com.example.level4task1.database.ProductRepository
+import com.example.level4task1.R
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -21,7 +22,8 @@ import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
     private val shoppingList = arrayListOf<Product>()
-    private val productAdapter = ProductAdapter(shoppingList)
+    private val productAdapter =
+        ProductAdapter(shoppingList)
     private lateinit var productRepository: ProductRepository
     private val mainScope = CoroutineScope(Dispatchers.Main)
 
@@ -29,7 +31,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        productRepository = ProductRepository(this)
+        productRepository =
+            ProductRepository(this)
         initViews()
     }
 
@@ -118,13 +121,27 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    private fun deleteShoppingList() {
+        mainScope.launch {
+            withContext(Dispatchers.IO) {
+                productRepository.deleteAllProducts()
+            }
+            getShoppingListFromDatabase()
+        }
+    }
+
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_delete_shopping_list -> {
+                deleteShoppingList()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+
     }
 }

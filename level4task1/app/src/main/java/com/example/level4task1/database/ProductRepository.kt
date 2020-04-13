@@ -1,4 +1,4 @@
-package com.example.level4task1
+package com.example.level4task1.database
 
 import android.content.Context
 import com.androidcourse.shoppinglistkotlin.model.Product
@@ -8,7 +8,9 @@ class ProductRepository(context: Context) {
 
     init {
         val database =
-            ShoppingListRoomDatabase.getDatabase(context)
+            ShoppingListRoomDatabase.getDatabase(
+                context
+            )
         productDao = database!!.productDao()
     }
 
