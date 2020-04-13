@@ -40,10 +40,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        initViews()
+
+
+    }
+
+    fun initViews(){
+
         buttonRock.setOnClickListener { Rock()}
         buttonPaper.setOnClickListener { Paper() }
         buttonScissors.setOnClickListener { Scissors()  }
-
     }
 
     private fun Scissors(){

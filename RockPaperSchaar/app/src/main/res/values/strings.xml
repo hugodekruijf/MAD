@@ -10,7 +10,7 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_history">History</string>
-    <string name="Roshambo">Roshambo</string>
+    <string name="Roshambo">Welcome</string>
     <string name="instructions">Instructions: select rock, paper or scissors to play.</string>
     <string name="line">line</string>
     <string name="Result">You win</string>
@@ -23,6 +23,7 @@
     <string name="rock">rock</string>
     <string name="paper">paper</string>
     <string name="scissors">scissors</string>
+    <string name="delete">delete</string>
 
 
 </resources>

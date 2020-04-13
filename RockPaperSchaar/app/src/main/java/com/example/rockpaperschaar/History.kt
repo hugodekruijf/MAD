@@ -2,6 +2,8 @@ package com.example.rockpaperschaar
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -35,9 +37,11 @@ class History : AppCompatActivity() {
         initViews()
         addGame()
         //Log.d("TAG", "INSERTED")
-        fab.setOnClickListener { view ->
-            deleteAll()
-        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_history,menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     private  fun deleteAll(){
@@ -45,8 +49,9 @@ class History : AppCompatActivity() {
             historyGameRepository.deleteGames()
             gameAdapter.notifyDataSetChanged()
         }
-        finish()
+        getGamesFromDatabase()
     }
+
     private fun addGame() {
             mainScope.launch {
                // val game = Game("win", java.util.Calendar.getInstance().toString(),"choiceHuman","choiceComputer")
@@ -72,6 +77,7 @@ class History : AppCompatActivity() {
         rvHistory.adapter = gameAdapter
         rvHistory.addItemDecoration(DividerItemDecoration(this@History, DividerItemDecoration.VERTICAL))
         createItemTouchHelper().attachToRecyclerView(rvHistory)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         getGamesFromDatabase()
     }
 
@@ -115,5 +121,21 @@ class History : AppCompatActivity() {
         }
         return ItemTouchHelper(callback)
     }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            R.id.action_delete -> {
+                deleteAll()
+                true
+            }
+
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
 
 }
