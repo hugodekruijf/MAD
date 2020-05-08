@@ -1,6 +1,8 @@
 package com.example.reminder
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
 public class ReminderRepository(context: Context) {
 
@@ -12,8 +14,8 @@ public class ReminderRepository(context: Context) {
     }
 
 
-    suspend fun getAllReminders(): List<Reminder> {
-        return reminderDao.getAllReminders()
+    suspend fun getAllReminders(): LiveData<List<Reminder>> {
+        return reminderDao?.getAllReminders() ?: MutableLiveData(emptyList())
     }
 
     suspend fun insertReminder(reminder: Reminder) {
