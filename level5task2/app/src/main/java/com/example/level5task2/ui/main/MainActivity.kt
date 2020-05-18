@@ -1,11 +1,13 @@
 package com.example.level5task2.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.example.level5task2.R
+import com.example.level5task2.ui.add.AddActivity
 
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -15,10 +17,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        initViews()
+    }
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+    private fun initViews() {
+        fab.setOnClickListener {
+            val intent = Intent(this, AddActivity::class.java)
+            //intent.putExtra(AddActivity.EXTRA_GAME, game)
+            startActivity(intent)
         }
     }
 

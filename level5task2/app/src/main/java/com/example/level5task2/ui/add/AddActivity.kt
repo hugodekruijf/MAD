@@ -19,5 +19,8 @@ class AddActivity : AppCompatActivity() {
                 .setAction("Action", null).show()
         }
     }
+    companion object {
+        const val EXTRA_GAME = "EXTRA_GAME"
+    }
 
 }
