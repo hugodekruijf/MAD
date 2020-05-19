@@ -2,11 +2,13 @@ package com.example.level5task2.ui.main
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -19,21 +21,31 @@ import com.example.level5task2.ui.add.EXTRA_GAME
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
+
 const val ADD_GAME_REQUEST_CODE = 100
 class MainActivity : AppCompatActivity() {
 
     private val games = arrayListOf<Game>()
     private val gameAdapter = GameAdapter(games)
     private  val viewModel: MainActivityViewModel by  viewModels()
+    @RequiresApi(Build.VERSION_CODES.O)
+    private val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         initViews()
         observeViewModel()
-
     }
 
     private fun initViews() {
@@ -48,14 +60,28 @@ class MainActivity : AppCompatActivity() {
         createItemTouchHelper().attachToRecyclerView(rvGames)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun selector(game: Game): LocalDate = LocalDate.parse(game.date, formatter)
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun observeViewModel() {
-        viewModel.games.observe(this, Observer { reminders ->
+        viewModel.games.observe(this, Observer { games ->
             this@MainActivity.games.clear()
-            this@MainActivity.games.addAll(reminders)
+            this@MainActivity.games.addAll(games)
+
+            this@MainActivity.games.sortBy ( {selector(it)} )
             gameAdapter.notifyDataSetChanged()
         })
 
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    val dateTimeStrToLocalDateTime: (String) -> LocalDateTime = {
+        LocalDateTime.parse(it, DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+    }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -68,9 +94,17 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_delete ->
+            {
+                deleteAll()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+    private  fun deleteAll(){
+            viewModel.deleteAllGame()
+            //gameAdapter.notifyDataSetChanged()
     }
 
     private fun createItemTouchHelper(): ItemTouchHelper {

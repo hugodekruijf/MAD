@@ -14,7 +14,7 @@ class GameAdapter(private val games: List<Game>) : RecyclerView.Adapter<GameAdap
         fun bind(game: Game) {
             itemView.textTitle.text = game.title
             itemView.textPlatform.text = game.platfrom
-            itemView.textDate.text = game.day +" - "+ game.month +" - "+ game.year
+            itemView.textDate.text = game.date
         }
     }
 
