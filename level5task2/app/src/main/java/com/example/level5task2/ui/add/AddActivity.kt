@@ -1,12 +1,17 @@
 package com.example.level5task2.ui.add
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.level5task2.R
+import com.example.level5task2.model.Game
 
 import kotlinx.android.synthetic.main.activity_add.*
+import kotlinx.android.synthetic.main.content_add.*
 
+const val EXTRA_GAME = "EXTRA_GAME"
 class AddActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,13 +19,25 @@ class AddActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
+        initViews()
     }
-    companion object {
-        const val EXTRA_GAME = "EXTRA_GAME"
+
+    private fun initViews() {
+        fab.setOnClickListener { onSave() }
+    }
+
+    private fun onSave() {
+        if (etTitle.text.toString().isNotBlank() && etPlatform.text.toString().isNotBlank() && etYear.text.toString().isNotBlank()) {
+            val game = Game(etTitle.text.toString(),etPlatform.text.toString(),etDay.text.toString(),
+                etMonth.text.toString(),etYear.text.toString())
+            val resultIntent = Intent()
+            resultIntent.putExtra(EXTRA_GAME, game)
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
+        } else {
+            Toast.makeText(this,"The Fields cannot be empty"
+                , Toast.LENGTH_SHORT).show()
+        }
     }
 
 }
