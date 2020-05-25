@@ -4,5 +4,9 @@
     <!-- Strings used for fragments for navigation -->
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="projectName">Project Name :</string>
+    <string name="timeEst">Time Estimate :</string>
+    <string name="deadline">Deadline :</string>
+    <string name="task">Task :</string>
 
 </resources>
