@@ -8,5 +8,6 @@
     <string name="timeEst">Time Estimate :</string>
     <string name="deadline">Deadline :</string>
     <string name="task">Task :</string>
+    <string name="save">Save</string>
 
 </resources>
