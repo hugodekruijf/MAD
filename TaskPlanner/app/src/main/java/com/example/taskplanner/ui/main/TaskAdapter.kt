@@ -9,7 +9,8 @@ import com.example.taskplanner.model.Task
 import kotlinx.android.synthetic.main.activity_edit.view.*
 import kotlinx.android.synthetic.main.item_task.view.*
 
-class TaskAdapter(private val tasks: List<Task>) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
+typealias MyCategoryClickListener = (Int) -> Unit
+class TaskAdapter(private val tasks: List<Task>,  private  val onClickListener: MyCategoryClickListener) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(task: Task) {
@@ -30,5 +31,8 @@ class TaskAdapter(private val tasks: List<Task>) : RecyclerView.Adapter<TaskAdap
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(tasks[position])
+        holder.itemView.setOnClickListener { Int ->
+            onClickListener(position)
+        }
     }
 }

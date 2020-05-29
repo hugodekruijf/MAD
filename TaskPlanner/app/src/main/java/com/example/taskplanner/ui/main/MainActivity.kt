@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private val tasks = arrayListOf<Task>()
-    private val taskAdapter = TaskAdapter(tasks)
+    private val taskAdapter = TaskAdapter(tasks, onClickListener = this::itemClicked)
 
     @RequiresApi(Build.VERSION_CODES.O)
     private val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
@@ -78,6 +78,13 @@ class MainActivity : AppCompatActivity() {
     val dateTimeStrToLocalDateTime: (String) -> LocalDateTime = {
         LocalDateTime.parse(it, DateTimeFormatter.ofPattern("dd-MM-yyyy"))
     }
+
+    fun itemClicked(position: Int) {
+        val intent = Intent(this, EditActivity::class.java)
+        val task = tasks[position]
+        intent.putExtra(EditActivity.EXTRA_TASK, task)
+        startActivity(intent)
+    }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -96,6 +103,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun createItemTouchHelper(): ItemTouchHelper {
         val callback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
 
             override fun onMove(
                 recyclerView: RecyclerView,
