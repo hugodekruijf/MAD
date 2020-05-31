@@ -30,10 +30,11 @@ class EditActivityViewModel (application: Application) : AndroidViewModel(applic
         }
     }
 
+
     private fun isTaskValid(): Boolean {
         return when {
             task.value == null -> {
-                error.value = "Note must not be null"
+                error.value = "Task must not be null"
                 false
             }
             task.value!!.name.isBlank() -> {

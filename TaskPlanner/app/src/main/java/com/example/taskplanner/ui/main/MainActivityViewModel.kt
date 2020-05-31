@@ -15,12 +15,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     val tasks: LiveData<List<Task>> = taskRepository.getTasks()
 
-    fun updateTask(task: Task){
-        ioScope.launch {
-            taskRepository.updateTask(task)
-        }
-    }
-
     fun insertTask(task: Task) {
         ioScope.launch {
             taskRepository.insertTask(task)
