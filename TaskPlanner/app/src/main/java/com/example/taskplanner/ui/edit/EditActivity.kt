@@ -2,23 +2,28 @@ package com.example.taskplanner.ui.edit
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.taskplanner.R
 import com.example.taskplanner.model.Task
 import kotlinx.android.synthetic.main.activity_edit.*
-import kotlinx.android.synthetic.main.activity_main.*
+import java.text.DateFormat
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
+
 
 const val EXTRA_TASK = "EXTRA_TASK"
 class EditActivity : AppCompatActivity() {
     private lateinit var editViewModel: EditActivityViewModel
-    private var nullOnStart = false;
+    private var nullOnStart = false
+    val DATE_FORMAT = "dd-MM-yyyy"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,27 +67,79 @@ class EditActivity : AppCompatActivity() {
 
 
     private fun save() {
-
-        if(nullOnStart){
+        if(checkInputs()){
+            if(nullOnStart){
             val task = Task(etProject.text.toString(),etTimeEst.text.toString().toInt(),(etDay.text.toString() + "-"+ etMonth.text.toString() + "-"+ etYear.text.toString()), etTask.text.toString())
             val resultIntent = Intent()
             resultIntent.putExtra(EXTRA_TASK, task)
             setResult(Activity.RESULT_OK, resultIntent)
             finish()
-        }
-        else
-        {
-            editViewModel.task.value?.apply {
+             }
+            else
+            {
+                editViewModel.task.value?.apply {
                 name = etProject.text.toString()
                 timeEstimate = etTimeEst.text.toString().toInt()
                 deadline = (etDay.text.toString() + "-"+ etMonth.text.toString() + "-"+ etYear.text.toString())
                 taskDescription = etTask.text.toString()
-            }
+                }
 
-            editViewModel.updateTask()
+                editViewModel.updateTask()
+            }
+        }
+    }
+
+    fun checkInputs(): Boolean{
+        if(checkDeadline()){
+            return true
+        }else{
+            return false
         }
 
+    }
 
+    fun isDateValid(date: String?): Boolean {
+        return try {
+            val df: DateFormat = SimpleDateFormat(DATE_FORMAT)
+            df.setLenient(false)
+            df.parse(date)
+            true
+        } catch (e: ParseException) {
+            false
+        }
+    }
+
+   private fun checkDeadline(): Boolean {
+       if(!isDateValid(etDay.text.toString()+"-"+etMonth.text.toString()+"-"+etYear.text.toString())){
+           Toast.makeText(this, "invalid Deadline", Toast.LENGTH_SHORT).show();
+           return false
+       }
+       var today = Calendar.getInstance()
+       var myDate = Calendar.getInstance()
+
+       myDate.set(etYear.text.toString().toInt(), etMonth.text.toString().toInt() -1, etDay.text.toString().toInt())
+
+       if (myDate.before(today))
+       {
+           Toast.makeText(this, "Deadline has already passed", Toast.LENGTH_SHORT).show();
+           return false;
+       }
+       var month = etMonth.text.toString()
+       var day = etDay.text.toString()
+
+       if(month.length <2){
+           etMonth.setText("0" + month)
+       }
+
+       if(day.length <2){
+           etDay.setText("0" + day)
+       }
+
+       if(etYear.text.toString().length >4){
+           Toast.makeText(this, "invalid deadline", Toast.LENGTH_SHORT).show();
+           return false
+       }
+       return true;
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
