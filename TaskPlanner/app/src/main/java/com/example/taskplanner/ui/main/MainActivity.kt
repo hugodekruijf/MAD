@@ -67,7 +67,6 @@ class MainActivity : AppCompatActivity() {
         viewModel.tasks.observe(this, Observer { tasks ->
             this@MainActivity.tasks.clear()
             this@MainActivity.tasks.addAll(tasks)
-
             this@MainActivity.tasks.sortBy ( {selector(it)} )
             taskAdapter.notifyDataSetChanged()
         })
