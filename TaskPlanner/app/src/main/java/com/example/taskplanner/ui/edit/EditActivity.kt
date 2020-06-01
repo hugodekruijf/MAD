@@ -69,6 +69,7 @@ class EditActivity : AppCompatActivity() {
     private fun save() {
         if(checkInputs()){
             if(nullOnStart){
+                Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
             val task = Task(etProject.text.toString(),etTimeEst.text.toString().toInt(),(etDay.text.toString() + "-"+ etMonth.text.toString() + "-"+ etYear.text.toString()), etTask.text.toString())
             val resultIntent = Intent()
             resultIntent.putExtra(EXTRA_TASK, task)
@@ -77,6 +78,7 @@ class EditActivity : AppCompatActivity() {
              }
             else
             {
+                Toast.makeText(this, "Updated", Toast.LENGTH_SHORT).show();
                 editViewModel.task.value?.apply {
                 name = etProject.text.toString()
                 timeEstimate = etTimeEst.text.toString().toInt()
@@ -89,16 +91,24 @@ class EditActivity : AppCompatActivity() {
         }
     }
 
-    fun checkInputs(): Boolean{
-        if(checkDeadline()){
-            return true
-        }else{
-            return false
-        }
-
+    private fun checkInputs(): Boolean{
+        return (checkValidityInputs() && checkDeadline())
     }
 
-    fun isDateValid(date: String?): Boolean {
+    private fun checkValidityInputs() : Boolean{
+        if(etProject.text.toString().isEmpty() ||  etTimeEst.text.toString().isEmpty() || etTask.text.toString().isEmpty()){
+            Toast.makeText(this, "Input fields can't be empty", Toast.LENGTH_SHORT).show();
+            return false
+        }
+        if(etTimeEst.text.toString().toInt() !in 1..10){
+            Toast.makeText(this, "Time estimate must be between 1 and 10 days", Toast.LENGTH_SHORT).show();
+            return false
+        }
+        return true
+    }
+
+
+    private fun isDateValid(date: String?): Boolean {
         return try {
             val df: DateFormat = SimpleDateFormat(DATE_FORMAT)
             df.setLenient(false)
@@ -111,7 +121,7 @@ class EditActivity : AppCompatActivity() {
 
    private fun checkDeadline(): Boolean {
        if(!isDateValid(etDay.text.toString()+"-"+etMonth.text.toString()+"-"+etYear.text.toString())){
-           Toast.makeText(this, "invalid Deadline", Toast.LENGTH_SHORT).show();
+           Toast.makeText(this, "Invalid deadline", Toast.LENGTH_SHORT).show();
            return false
        }
        var today = Calendar.getInstance()
@@ -136,7 +146,7 @@ class EditActivity : AppCompatActivity() {
        }
 
        if(etYear.text.toString().length >4){
-           Toast.makeText(this, "invalid deadline", Toast.LENGTH_SHORT).show();
+           Toast.makeText(this, "Invalid deadline", Toast.LENGTH_SHORT).show();
            return false
        }
        return true;
